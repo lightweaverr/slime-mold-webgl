@@ -1,0 +1,28 @@
+import { PhysarumSettings } from "../types";
+
+export const initialSettings: PhysarumSettings = {
+  mouseRad: 100,
+  mousePlaceAmount: 200,
+  mousePlaceRadius: 50,
+  mousePlaceColor: 0,
+  isSobelFilter: false,
+  isMonochrome: true,
+  dotOpacity: 0,
+  trailOpacity: 1,
+  isParticleTexture: false,
+  particleTexture: 'None',
+  decay: 0.97,
+  isDisplacement: true,
+  isRestrictToMiddle: false,
+  randChance: [0.05, 0.05, 0.05],
+  moveSpeed: [1, 1, 1],
+  sensorDistance: [10, 10, 10],
+  rotationAngle: [0.1, 0.1, 0.1],
+  sensorAngle: [1, 1, 1],
+  colors: ['rgb(255,250,60)', 'rgb(255,0,0)', 'rgb(92,255,111)'],
+  infectious: [0, 0, 0],
+  dotSizes: [1, 1, 1],
+  attract0: [0.5, 0, 0],
+  attract1: [0, 0.5, 0],
+  attract2: [0, 0, 0.5],
+};

@@ -2,9 +2,9 @@
 
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
-import { PhysarumSettings } from "../types";
-import { initialSettings } from "./InitialSettings";
-import { initScene } from "./utils";
+import { PhysarumSettings } from "../../Physarum/types";
+import { initialSettings } from "../../Physarum/InitialSettings";
+
 
 interface PhysarumProps {
   width: number | null;
@@ -27,7 +27,7 @@ export const Physarum: React.FC<PhysarumProps> = ({width, height}) => {
       height = canvas.current.clientHeight;
     }
 
-    ({scene: scene.current, camera: camera.current, renderer: renderer.current} = initScene(width, height, canvas.current));
+
     
   }, [])
 

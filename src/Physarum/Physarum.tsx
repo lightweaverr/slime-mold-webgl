@@ -7,6 +7,8 @@ import { DIFFUSE_DECAY_FRAGMENT } from "./shaders/DiffuseDecayFragment.js"
 import { RENDER_DOTS_VERTEX } from "./shaders/RenderDotsVertex.js"
 import { RENDER_DOTS_FRAGMENT } from "./shaders/RenderDotsFragment.js"
 import { FINAL_RENDER_FRAGMENT } from "./Shaders/FinalRenderFragment.js"
+import { UPDATE_DOTS_FRAGMENT } from "./Shaders/UpdateDotsFragment.js"
+
 
 import { PingPongShader } from "./PingPongShader";
 import { ShaderBuilder } from "./ShaderBuilder";
@@ -36,6 +38,7 @@ export class Physarum {
   };
   diffuseShader?: PingPongShader;
   renderDotsShader?: Shader;
+  updateDotsShader?: PingPongShader | null;
 
   constructor(options: ConstructorOptions = {}) {
     this.time = 0;
@@ -269,6 +272,38 @@ export class Physarum {
 		return this.renderDotsShader
 	}
 
+  getUpdateDotsShader(positionsAndDirections? : Float32Array<ArrayBuffer>) {
+		if (!this.updateDotsShader) {
+      if (!positionsAndDirections) return;
+			this.updateDotsShader = new PingPongShaderBuilder()
+				.withDimensions(this.settings.spawnWidth, this.settings.spawnWidth)
+				.withVertex(PASS_THROUGH_VERTEX)
+				.withFragment(UPDATE_DOTS_FRAGMENT)
+				.withTextureData(positionsAndDirections)
+				.withUniform("diffuseTexture", null)
+				.withUniform("pointsTexture", null)
+				.withUniform("mouseSpawnTexture", null)
+				.withUniform("isRestrictToMiddle", this.settings.isRestrictToMiddle)
+				.withUniform("time", 0)
+				.withUniform("resolution", Vector([this.settings.width, this.settings.height]))
+				.withUniform("textureDimensions", Vector([this.settings.spawnWidth, this.settings.spawnWidth]))
+				.withUniform("mouseRad", this.settings.mouseRad)
+				.withUniform("mousePos", Vector([this.mousePos!.x, this.mousePos!.y]))
+				.withUniform("isDisplacement", this.settings.isDisplacement)
+				.withUniform("sensorAngle", Vector(this.settings.sensorAngle))
+				.withUniform("rotationAngle", Vector(this.settings.rotationAngle))
+				.withUniform("sensorDistance", Vector(this.settings.sensorDistance))
+				.withUniform("randChance", Vector(this.settings.randChance))
+				.withUniform("attract0", Vector(this.settings.attract0))
+				.withUniform("attract1", Vector(this.settings.attract1))
+				.withUniform("attract2", Vector(this.settings.attract2))
+				.withUniform("moveSpeed", Vector(this.settings.moveSpeed))
+				.withUniform("infectious", Vector(this.settings.infectious))
+				.create()
+		}
+		return this.updateDotsShader
+	}
+
   resetPosition() {
     let dotAmount = this.settings.spawnWidth * this.settings.spawnWidth;
 		let positionsAndDirections = new Float32Array(dotAmount * 4)
@@ -328,7 +363,7 @@ export class Physarum {
 				//team (0-> red, 1-> green, 2-> blue)
 				positionsAndDirections[id] = team
 			} else {
-				positionsAndDirections[id++] = ((i % this.settings.spawnWidth) * this.dimensions.width) / WIDTH
+				positionsAndDirections[id++] = ((i % this.settings.spawnWidth) * this.dimensions.width) / this.settings.spawnWidth
 				//y
 				positionsAndDirections[id++] =
 					(Math.floor(i / this.settings.spawnWidth) * this.dimensions.height) / this.settings.spawnWidth
@@ -339,8 +374,8 @@ export class Physarum {
 				positionsAndDirections[id] = rndInt(0, 2)
 			}
 		}
-		this.getUpdateDotsShader().dispose()
-		this.updateDotsShader = null
+		this.getUpdateDotsShader()!.dispose()
+		this.updateDotsShader = null;
 		this.getUpdateDotsShader(positionsAndDirections)
   }
 }

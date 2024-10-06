@@ -1,11 +1,14 @@
-import PhysarumSimulation from "@/components/Physarum/PhysarumSimulation";
+import dynamic from 'next/dynamic';
 
-
-
-
+const PhysarumSimulation = dynamic(
+  () => import('@/components/Physarum/PhysarumSimulation'),
+  { ssr: false }
+);
 
 export default function Home() {
   return (
-   <PhysarumSimulation />
+    <div>
+      <PhysarumSimulation />
+    </div>
   );
 }

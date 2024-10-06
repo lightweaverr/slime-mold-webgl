@@ -74,7 +74,13 @@ export class Physarum {
     this.initShaders();
     this.initComposer();
 
-    if (this.container) this.container.appendChild(this.renderer.domElement);
+
+
+
+    if (this.container) {
+      // so that there is just one canvas
+      if (this.container.childElementCount < 1) this.container.appendChild(this.renderer.domElement);
+    } 
     else document.body.appendChild(this.renderer.domElement);
   }
 
@@ -87,6 +93,8 @@ export class Physarum {
 
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
+      // @ts-ignore
+      blending: THREE.NoBlending,
     });
     this.renderer.setSize(w, h);
   }
@@ -239,7 +247,7 @@ export class Physarum {
       this.finalMaterial
     )
     this.finalMesh.position.set(0, 0, 0)
-    this.finalMesh.scale.set(this.settings.width, this.settings.height, 1)
+    this.finalMesh.scale.set(this.dimensions.width, this.dimensions.height, 1)
 
     this.scene!.add(this.finalMesh)
   }
@@ -250,8 +258,8 @@ export class Physarum {
     this.composer.addPass(renderPass)
 
     this.sobelPass = new ShaderPass(SobelOperatorShader)
-    this.sobelPass.uniforms["resolution"].value.x = this.settings.width
-    this.sobelPass.uniforms["resolution"].value.y = this.settings.height
+    this.sobelPass.uniforms["resolution"].value.x = this.dimensions.width
+    this.sobelPass.uniforms["resolution"].value.y = this.dimensions.height
     this.sobelPass.enabled = this.settings.isSobelFilter
     this.composer.addPass(this.sobelPass)
   }
@@ -276,14 +284,14 @@ export class Physarum {
     uvs: Float32Array<ArrayBuffer> = new Float32Array()) {
       if (!this.renderDotsShader) {
         this.renderDotsShader = new ShaderBuilder()
-          .withDimensions(this.settings.width, this.settings.height)
+          .withDimensions(this.dimensions.width, this.dimensions.height)
           .withVertex(RENDER_DOTS_VERTEX)
           .withFragment(RENDER_DOTS_FRAGMENT)
           .withUniform("isParticleTexture", this.settings.isParticleTexture)
           .withUniform("particleTexture", null)
           .withUniform("positionTexture", null)
           .withUniform("dotSizes", Vector(this.settings.dotSizes))
-          .withUniform("resolution", Vector([this.settings.width, this.settings.height]))
+          .withUniform("resolution", Vector([this.dimensions.width, this.dimensions.height]))
           .withAttribute("position", new THREE.BufferAttribute(pos, 3, false))
           .withAttribute("uv", new THREE.BufferAttribute(uvs, 2, false))
           .create()
@@ -304,7 +312,7 @@ export class Physarum {
         .withUniform("mouseSpawnTexture", null)
         .withUniform("isRestrictToMiddle", this.settings.isRestrictToMiddle)
         .withUniform("time", 0)
-        .withUniform("resolution", Vector([this.settings.width, this.settings.height]))
+        .withUniform("resolution", Vector([this.dimensions.width, this.dimensions.height]))
         .withUniform("textureDimensions", Vector([this.settings.spawnWidth, this.settings.spawnWidth]))
         .withUniform("mouseRad", this.settings.mouseRad)
         .withUniform("mousePos", Vector([this.mousePos!.x, this.mousePos!.y]))
@@ -393,7 +401,9 @@ export class Physarum {
         positionsAndDirections[id] = rndInt(0, 2)
       }
     }
-    this.getUpdateDotsShader()!.dispose()
+    if (this.updateDotsShader) {
+      this.getUpdateDotsShader()!.dispose()
+    }
     this.updateDotsShader = null;
     this.getUpdateDotsShader(positionsAndDirections)
   }
@@ -432,7 +442,7 @@ export class Physarum {
     (this.finalMesh!.material as THREE.ShaderMaterial).uniforms.diffuseTexture.value =
       this.diffuseShader!.getTexture()
 
-    this.renderer!.setSize(this.settings.width, this.settings.height)
+    this.renderer!.setSize(this.dimensions.width, this.dimensions.height)
     this.renderer!.clear()
 
 
@@ -440,5 +450,5 @@ export class Physarum {
 
   }
 
-  
+
 }

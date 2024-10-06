@@ -10,19 +10,13 @@ export function rndInt(min: number, max: number) {
 
 
 export const Vector = (arr: number[]) : THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | void => {
-	const constructors: any = {
-		2: THREE.Vector2,
-		3: THREE.Vector3,
-		4: THREE.Vector4,
-	};
-
-	const Constructor = constructors[arr.length];
-
-	if (Constructor) {
-		return new Constructor(...arr);
-	} else {
-		console.error(`Cannot create vector with ${arr.length} elements`);
-	}
+	return arr.length == 2
+		? new THREE.Vector2(arr[0], arr[1])
+		: arr.length == 3
+		? new THREE.Vector3(arr[0], arr[1], arr[2])
+		: arr.length == 4
+		? new THREE.Vector4(arr[0], arr[1], arr[2], arr[3])
+		: console.error("Cant create vector with " + arr.length + " elements")
 };
 
 

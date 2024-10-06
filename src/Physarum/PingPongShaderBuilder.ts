@@ -79,7 +79,7 @@ export class PingPongShaderBuilder {
 			this.vertexString,
 			this.fragmentString,
 			this.uniforms || {},   
-			this.data || null,     
+			this.data || null as any,   
 			this.attributes || {}  
 		);
 	}

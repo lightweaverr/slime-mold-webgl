@@ -1,35 +1,15 @@
 import * as THREE from "three"
-
 /**
  * Adapted from https://github.com/nicoptere/physarum/blob/master/src/RenderTarget.js
  */
 export class Shader {
-	private width: number
-	private height: number
-	private uniforms: Record<string, { value: any }>
-	private material: THREE.ShaderMaterial
-	private renderTarget: THREE.WebGLRenderTarget
-	private mesh: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>
-	private scene?: THREE.Scene
-	private camera?: THREE.OrthographicCamera
-
-	constructor(
-		width: number,
-		height: number,
-		vertex: string,
-		fragment: string,
-		uniforms: Record<string, any>,
-		attributes: Record<string, THREE.BufferAttribute>,
-		options: Record<string, any> = {}
-	) {
+	constructor(width, height, vertex, fragment, uniforms, attributes, options) {
 		this.width = width
 		this.height = height
-
 		this.uniforms = {}
 		for (let key in uniforms) {
 			this.uniforms[key] = { value: uniforms[key] }
 		}
-
 		this.material = new THREE.ShaderMaterial({
 			uniforms: this.uniforms,
 			blending: THREE.NoBlending,
@@ -38,41 +18,36 @@ export class Shader {
 			fragmentShader: fragment
 		})
 
-		const opts = {
+		let opts = {
 			minFilter: THREE.NearestFilter,
 			magFilter: THREE.NearestFilter,
 			format: THREE.RGBAFormat,
 			type: THREE.FloatType,
-			blending: THREE.NoBlending,
-			...options
+			blending: THREE.NoBlending
 		}
-
+		for (let key in options) {
+			opts[key] = options[key]
+		}
 		this.renderTarget = new THREE.WebGLRenderTarget(width, height, opts)
 
-		const bufferGeometry = new THREE.BufferGeometry()
+		let bufferGeometry = new THREE.BufferGeometry()
 		for (let key in attributes) {
 			bufferGeometry.setAttribute(key, attributes[key])
 		}
-
 		this.mesh = new THREE.Points(bufferGeometry, this.material)
+
 		this.getScene().add(this.mesh)
 	}
-
-	setUniform(key: string, value: any): void {
+	setUniform(key, value) {
 		if (!this.material.uniforms.hasOwnProperty(key)) {
-			this.material.uniforms[key] = {value}
+			this.material.uniforms[key] = {}
 		}
 		this.material.uniforms[key].value = value
 	}
-
-	getTexture(): THREE.Texture {
+	getTexture() {
 		return this.renderTarget.texture
 	}
-
-	render(
-		renderer: THREE.WebGLRenderer,
-		updatedUniforms: Record<string, any> = {}
-	): void {
+	render(renderer, updatedUniforms) {
 		this.mesh.visible = true
 
 		for (let key in updatedUniforms) {
@@ -85,30 +60,27 @@ export class Shader {
 		renderer.setRenderTarget(null)
 		this.mesh.visible = false
 	}
-
-	getScene(): THREE.Scene {
+	getScene() {
 		if (!this.scene) {
 			this.scene = new THREE.Scene()
 		}
 		return this.scene
 	}
-
-	getCamera(): THREE.OrthographicCamera {
+	getCamera() {
 		if (!this.camera) {
 			this.camera = new THREE.OrthographicCamera(this.width / -2, this.width / 2, this.height / 2, this.height / -2, 0.1, 1000)
 			this.camera.position.z = 1
 		}
 		return this.camera
 	}
-
-	dispose(): void {
+	dispose() {
 		this.getScene().remove(this.mesh)
 		this.mesh.geometry.dispose()
-		this.mesh = null as unknown as THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>
-		this.camera = null as unknown as THREE.OrthographicCamera
+		this.mesh = null
+		this.camera = null
 		this.material.dispose()
 		this.renderTarget.texture.dispose()
-		this.renderTarget = null as unknown as THREE.WebGLRenderTarget
-		this.scene = null as unknown as THREE.Scene
+		this.renderTarget = null
+		this.scene = null
 	}
 }

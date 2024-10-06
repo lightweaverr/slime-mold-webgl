@@ -42,6 +42,10 @@ export class Physarum {
 
 
 	init() {
+
+		if (this.isInit) return;
+
+		this.isInit = true;
 		this.width = this.dimensions.width
 		this.height = this.dimensions.height
 		this.textureLoader = new THREE.TextureLoader()
@@ -64,14 +68,15 @@ export class Physarum {
 		this.initComposer()
 
 		if (!forShow) {
-			this.initGUI()
+			// this.initGUI()
 		}
 
-		if (this.container) {
-      // so that there is just one canvas
-      if (this.container.childElementCount < 1) this.container.appendChild(this.renderer.domElement);
-    } 
-    else document.body.appendChild(this.renderer.domElement);
+		document.body.appendChild(this.renderer.domElement)
+		// if (this.container) {
+    //   // so that there is just one canvas
+    //   if (this.container.childElementCount < 1) this.container.appendChild(this.renderer.domElement);
+    // } 
+    // else document.body.appendChild(this.renderer.domElement);
 	}
 
 	initComposer() {

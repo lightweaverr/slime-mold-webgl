@@ -1,3 +1,5 @@
+![alt text](<Screenshot 2024-10-06 at 9.27.24 PM.png>)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

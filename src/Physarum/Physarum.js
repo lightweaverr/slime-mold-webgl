@@ -66,7 +66,7 @@ export class Physarum {
 		this.initComposer()
 
 		if (!forShow) {
-			// this.initGUI()
+			this.initGUI()
 		}
 
 		this.container.appendChild(this.renderer.domElement);
@@ -485,18 +485,6 @@ export class Physarum {
 	}
 	
 	initGUI() {
-		let infoButton = document.createElement("div")
-		infoButton.classList.add("infoButton")
-		document.body.appendChild(infoButton)
-
-		let infoField = document.createElement("div")
-		infoField.classList.add("infoField")
-		infoField.innerHTML = "i"
-		infoButton.appendChild(infoField)
-
-		infoButton.onclick = () => {
-			InfoDialog.create(INFO_TEXT, () => {})
-		}
 
 		let gui = new GUI()
 		this.gui = gui
@@ -524,46 +512,6 @@ export class Physarum {
 			Random: false
 		}
 
-		let controls = gui.addFolder("Controls")
-		controls.close()
-		controls
-			.add(
-				this.settings,
-				"mouseRad",
-
-				0,
-				500,
-				0.1
-			)
-			.name("Mouse push radius")
-			.onChange(() =>
-				this.getUpdateDotsShader().setUniform(
-					"mouseRad",
-					this.settings.mouseRad
-				)
-			)
-
-		controls
-			.add(this.settings, "mousePlaceRadius", 1, 500, 1)
-			.name("Click spawn radius")
-
-		controls
-			.add(this.settings, "mousePlaceAmount", 1, 500000, 1)
-			.name("Click spawn amount")
-
-		let placingColors = controls.addFolder("Place color")
-		placingColors.close()
-		for (let key in placing) {
-			placingColors.add(placing, key).onChange(() => {
-				for (let key2 in placing) {
-					placing[key2] = false
-				}
-				placing[key] = true
-				this.settings.mousePlaceColor =
-					key == "Slime0" ? 0 : key == "Slime1" ? 1 : key == "Slime2" ? 2 : -1
-				placingColors.controllers.forEach(contr => contr.updateDisplay())
-			})
-		}
 		gui
 			.add(this.diffuseShader.getUniforms().decay, "value", 0.01, 0.99, 0.01)
 			.name("Decay")

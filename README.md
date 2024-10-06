@@ -1,5 +1,5 @@
 # Physarum Mold Simulation
-This project implements a Physarum mold simulation, inspired by the paper "Characteristics of pattern formation and evolution in approximations of Physarum transport networks."
+This project implements a Physarum mold simulation, inspired by the paper "[Characteristics of pattern formation and evolution in approximations of Physarum transport networks.](https://uwe-repository.worktribe.com/output/980579/characteristics-of-pattern-formation-and-evolution-in-approximations-of-physarum-transport-networks)"
 
 
 # Getting Started

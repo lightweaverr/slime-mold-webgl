@@ -122,7 +122,7 @@ export class PingPongShader {
 				: this.renderTarget0;
 	}
 
-	render(renderer: THREE.WebGLRenderer, updatedUniforms: { [key: string]: any }) {
+	render(renderer: THREE.WebGLRenderer, updatedUniforms: { [key: string]: any } = {}) {
 		this.switchRenderTargets();
 
 		this.mesh.visible = true;

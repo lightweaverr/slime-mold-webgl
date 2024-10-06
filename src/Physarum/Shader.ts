@@ -71,7 +71,7 @@ export class Shader {
 
 	render(
 		renderer: THREE.WebGLRenderer,
-		updatedUniforms: Record<string, any>
+		updatedUniforms: Record<string, any> = {}
 	): void {
 		this.mesh.visible = true
 

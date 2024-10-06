@@ -1,3 +1,4 @@
+import PhysarumSimulation from "@/components/Physarum/PhysarumSimulation";
 
 
 
@@ -5,8 +6,6 @@
 
 export default function Home() {
   return (
-    <div>
-      hello
-    </div>
+   <PhysarumSimulation />
   );
 }

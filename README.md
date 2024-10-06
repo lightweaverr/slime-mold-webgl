@@ -1,6 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Physarum Mold Simulation
+This project implements a Physarum mold simulation, inspired by the paper "Characteristics of pattern formation and evolution in approximations of Physarum transport networks."
 
-## Getting Started
+
+# Getting Started
 
 First, run the development server:
 
@@ -16,8 +18,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-# Physarum Mold Simulation
-This project implements a Physarum mold simulation, inspired by the paper "Characteristics of pattern formation and evolution in approximations of Physarum transport networks."
 
 # Key Features:
 Developed with TypeScript: Wrapped in a React component for seamless integration.

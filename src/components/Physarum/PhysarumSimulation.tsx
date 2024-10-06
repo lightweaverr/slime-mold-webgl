@@ -1,6 +1,6 @@
 'use client'
 import React, { use, useEffect, useRef } from 'react';
-import { Physarum } from '@/Physarum/Physarum'; // Assuming Physarum.js is in the same directory
+import { Physarum } from '@/Physarum/Physarum';
 
 const PhysarumSimulation = () => {
   const containerRef = useRef(null);
@@ -23,12 +23,19 @@ const PhysarumSimulation = () => {
     };
 
     animate();
+
+    return () => {
+
+      if (physarum.current) {
+        physarum.current.dispose();
+      }
+    };
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="w-screen h-screen overflow-hidden fixed inset-0 z-10"
+    <div
+      ref={containerRef}
+      className="w-screen h-screen fixed inset-0 z-10"
     />
   );
 };

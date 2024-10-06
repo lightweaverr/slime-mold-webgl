@@ -43,9 +43,7 @@ export class Physarum {
 
 	init() {
 
-		if (this.isInit) return;
 
-		this.isInit = true;
 		this.width = this.dimensions.width
 		this.height = this.dimensions.height
 		this.textureLoader = new THREE.TextureLoader()
@@ -71,7 +69,7 @@ export class Physarum {
 			// this.initGUI()
 		}
 
-		document.body.appendChild(this.renderer.domElement)
+		this.container.appendChild(this.renderer.domElement);
 		// if (this.container) {
     //   // so that there is just one canvas
     //   if (this.container.childElementCount < 1) this.container.appendChild(this.renderer.domElement);
@@ -781,5 +779,17 @@ export class Physarum {
 				contr.updateDisplay()
 			})
 		}
+	}
+
+	dispose() {
+		this.scene.remove(this.finalMesh)
+		this.scene.remove(this.updateDotsShader)
+		this.scene.remove(this.renderDotsShader)
+		this.scene.remove(this.sobelPass)
+		this.scene.remove(this.composer)
+		this.scene.remove(this.camera)
+		this.scene.remove(this.renderer.domElement)
+		this.container.removeChild(this.renderer.domElement);
+		this.renderer.dispose()
 	}
 }

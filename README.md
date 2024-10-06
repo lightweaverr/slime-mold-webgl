@@ -1,11 +1,9 @@
-<<<<<<< HEAD
+
 ![alt text](<Screenshot 2024-10-06 at 9.27.24 PM.png>)
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-=======
 # Physarum Mold Simulation
 This project implements a Physarum mold simulation, inspired by the paper "[Characteristics of pattern formation and evolution in approximations of Physarum transport networks.](https://uwe-repository.worktribe.com/output/980579/characteristics-of-pattern-formation-and-evolution-in-approximations-of-physarum-transport-networks)"
->>>>>>> 8336f1a1fd3215529f7cb633b34b187b96d84176
 
 
 # Getting Started

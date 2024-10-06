@@ -28,7 +28,7 @@ const PhysarumSimulation = () => {
   return (
     <div 
       ref={containerRef} 
-      className="w-screen h-screen overflow-hidden fixed inset-0"
+      className="w-screen h-screen overflow-hidden fixed inset-0 z-10"
     />
   );
 };

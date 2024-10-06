@@ -22,15 +22,28 @@ var WIDTH = 256
 var mouseDown = false
 var forShow = false
 export class Physarum {
-	constructor(renderDimensions) {
-		this.dims = renderDimensions
-		this.time = 0
-	}
+
+	constructor(options = {}) {
+    this.time = 0;
+    const width = options.width || 800;
+    const height = options.height || 600;
+    this.dimensions = {
+      width,
+      height,
+    };
+    if (options.container) {
+      this.container = options.container;
+      this.dimensions = {
+        width: options.container.clientWidth,
+        height: options.container.clientHeight,
+      };
+    }
+  }
 
 
 	init() {
-		this.width = forShow ? 800 : window.innerWidth
-		this.height = forShow ? 800 : window.innerHeight
+		this.width = this.dimensions.width
+		this.height = this.dimensions.height
 		this.textureLoader = new THREE.TextureLoader()
 
 		this.initScene()
@@ -54,7 +67,11 @@ export class Physarum {
 			this.initGUI()
 		}
 
-		document.body.appendChild(this.renderer.domElement)
+		if (this.container) {
+      // so that there is just one canvas
+      if (this.container.childElementCount < 1) this.container.appendChild(this.renderer.domElement);
+    } 
+    else document.body.appendChild(this.renderer.domElement);
 	}
 
 	initComposer() {
@@ -134,7 +151,7 @@ export class Physarum {
 		let rotationAngle1 = rndFloat(0.1, 0.3)
 		let rotationAngle2 = rndFloat(0.1, 0.3)
 		this.settings = {
-			mouseRad: 100,
+			mouseRad: 0,
 			mousePlaceAmount: 200,
 			mousePlaceRadius: 50,
 			mousePlaceColor: 0,

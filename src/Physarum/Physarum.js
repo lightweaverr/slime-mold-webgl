@@ -671,27 +671,6 @@ export class Physarum {
 				"resetPositions"
 			)
 			.name("Reset Positions")
-		gui
-			.add(
-				this.settings,
-				"particleTexture",
-				"None,circle_01,circle_02,circle_03,circle_04,circle_05,dirt_01,dirt_02,dirt_03,fire_01,fire_02,flame_01,flame_02,flame_03,flame_04,flame_05,flame_06,flare_01,light_01,light_02,light_03,magic_01,magic_02,magic_03,magic_04,magic_05,muzzle_01,muzzle_02,muzzle_03,muzzle_04,muzzle_05,scorch_01,scorch_02,scorch_03,scratch_01,slash_01,slash_02,slash_03,slash_04,smoke_01,smoke_02,smoke_03,smoke_04,smoke_05,smoke_06,smoke_07,smoke_08,smoke_09,smoke_10,spark_01,spark_02,spark_03,spark_04,spark_05,spark_06,spark_07,star_01,star_02,star_03,star_04,star_05,star_06,star_07,star_08,star_09,symbol_01,symbol_02,trace_01,trace_02,trace_03,trace_04,trace_05,trace_06,trace_07,twirl_01,twirl_02,twirl_03,window_01,window_02,window_03,window_04".split(
-					","
-				)
-			)
-			.name("Dot Texture")
-			.onChange(() => {
-				this.getRenderDotsShader().setUniform(
-					"isParticleTexture",
-					this.settings.particleTexture != "None"
-				)
-				if (this.settings.particleTexture != "None") {
-					this.textureLoader.load(
-						"src/images/particles/" + this.settings.particleTexture + ".png",
-						tex => this.getRenderDotsShader().setUniform("particleTexture", tex)
-					)
-				}
-			})
 	}
 	randomizeSettings(teamIndex) {
 		if (teamIndex == -1) {
